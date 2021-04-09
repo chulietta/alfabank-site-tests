@@ -10,6 +10,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.nio.charset.StandardCharsets;
 
+import static ru.alfabank.config.WebConfig.WEB_CONFIG;
+
 
 public class AttachmentsHelper {
 
@@ -37,7 +39,7 @@ public class AttachmentsHelper {
 
     public static String getVideoUrl() {
 
-        return System.getProperty("video_storage") + getSessionId() + ".mp4";
+        return WEB_CONFIG.getVideoStorage() + getSessionId() + ".mp4";
     }
 
     public static String getSessionId() {

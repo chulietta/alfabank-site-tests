@@ -21,7 +21,7 @@ public class WebTestLifeCycleExtension implements BeforeAllCallback, AfterEachCa
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        open("/everyday/debit-cards/");
+        open("everyday/debit-cards/");
     }
 
     @Override
