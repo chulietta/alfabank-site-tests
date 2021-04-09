@@ -27,7 +27,7 @@ public class DebitCardsPageTests {
     @Test
     @DisplayName("Debit cards page should be loaded")
     void debitCardBlocksLoadedTest() {
-        step("проверка количества дебетовых карт на странице", () -> {
+        step("Проверка количества дебетовых карт на странице", () -> {
             $$("#all-cards h2").shouldHaveSize(12);
         });
         step("Проверка заголовков всех дебетовых карт", () -> {
