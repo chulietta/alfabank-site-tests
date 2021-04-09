@@ -1,7 +1,6 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/dandreyanov/messaging_lk?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/dandreyanov/messaging_lk?style=flat-square) ![GitHub last commit](https://img.shields.io/github/last-commit/dandreyanov/messaging_lk?style=flat-square)
-
 # UI тесты https://alfabank.ru/
-## Реализованы проверки страницы "Депозитные карты"
+Ссылка на задачу в Jenkins https://jenkins.autotests.cloud/view/QA.GURU_4/job/C04-IChulietta-qa_guru_4_11/
+## Реализованы проверки страницы "Дебетовые карты" https://alfabank.ru/everyday/debit-cards/
 - [X] - Проверка заголовка страницы дебетовых карт
 - [X] - Проверка загрузки всех дебетовых карт на странице
 - [X] - Проверка перехода по ссылке в архивные карты
