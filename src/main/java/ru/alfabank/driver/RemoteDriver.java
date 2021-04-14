@@ -12,7 +12,7 @@ public class RemoteDriver implements DriverProvider {
     public void init() {
         addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
         Configuration.startMaximized = true;
-        Configuration.timeout = 10000;
+        Configuration.timeout = 15000;
         Configuration.browser = WEB_CONFIG.getBrowserName();
         Configuration.browserVersion = WEB_CONFIG.getBrowserVersion();
         Configuration.baseUrl = WEB_CONFIG.getBaseUrl();
