@@ -6,11 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import ru.alfabank.lifecycle.WebTestLifeCycleExtension;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static io.qameta.allure.Allure.step;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("web")
 @ExtendWith(WebTestLifeCycleExtension.class)
@@ -18,100 +21,73 @@ public class DebitCardsPageTests {
 
     @Test
     @DisplayName("Debit cards page should be loaded")
-    void debitCardsPageHeaderTest() {
-        step("Проверка заголовка страницы дебетовых карт", () -> {
+    void debitCardsPageLoadedTest() {
+        step("Check page title", () -> {
             $("h1").shouldHave(text("Дебетовые карты"));
         });
     }
 
     @Test
-    @DisplayName("Debit cards page should be loaded")
+    @DisplayName("Debit cards blocks should be loaded")
     void debitCardBlocksLoadedTest() {
-        step("Проверка количества дебетовых карт на странице", () -> {
-            $$("#all-cards h2").shouldHaveSize(12);
+        step("Check debit cards count", () -> {
+            $("#all-cards").$$("[data-widget-name=CatalogCard]").shouldHave(size(10));
         });
-        step("Проверка заголовков всех дебетовых карт", () -> {
-            $("#alfacard-benefit h2").shouldHave(text("Альфа-Карта"));
-            $("#alfacard-premium h2").shouldHave(text("Альфа-Карта Premium"));
-            $("#alfa-travel h2").shouldHave(text("Alfa Travel"));
-            $("#alfa-travel-premium h2").shouldHave(text("Alfa Travel Premium"));
-            $("#aeroflot h2").shouldHave(text("Аэрофлот"));
-            $("#aeroflot-premium h2").shouldHave(text("Аэрофлот Black Edition"));
-            $("#yandex h2").shouldHave(text("Яндекс.Плюс"));
-            $("#pyaterochka h2").shouldHave(text("Пятёрочка"));
-            $("#perekrestok h2").shouldHave(text("Перекрёсток"));
-            $("#mir h2").shouldHave(text("МИР"));
-            $("#childcard h2").shouldHave(text("Детская карта"));
-        });
-    }
-
-    @Test
-    @DisplayName("Check archive cards link")
-    void archiveCardsLinkTest() {
-        step("Проверка перехода по ссылке в архивные карты", () -> {
-            $("#archive-link a").shouldHave(href("/everyday/debit-cards-archive/"));
-            $("#archive-link").$(byText("Архивные карты")).click();
-            $("h1").shouldHave(text("Архивные карты"));
+        step("Check debit cards titles", () -> {
+            assertThat($("#alfacard-benefit h2").innerText()).isEqualTo("Дебетовая Альфа-Карта");
+            assertThat($("#mir h2").innerText()).isEqualTo("Дебетовая карта МИР");
+            assertThat($("#alfacard-premium h2").innerText()).isEqualTo("Дебетовая Альфа-Карта Premium");
+            assertThat($("#alfa-travel h2").innerText()).isEqualTo("Дебетовая карта Alfa Travel");
+            assertThat($("#alfa-travel-premium h2").innerText()).isEqualTo("Дебетовая карта Alfa Travel Premium");
+            assertThat($("#aeroflot h2").innerText()).isEqualTo("Дебетовая карта Аэрофлот");
+            assertThat($("#aeroflot-premium h2").innerText()).isEqualTo("Дебетовая карта Аэрофлот Black Edition");
+            assertThat($("#pyaterochka h2").innerText()).isEqualTo("Дебетовая карта Пятёрочка");
+            assertThat($("#childcard h2").innerText()).isEqualTo("Дебетовая Детская карта");
+            assertThat($("[id='1-5-25'] h2").innerText()).isEqualTo("Кэшбэк 1-5-25");
         });
     }
 
     @Test
-    @DisplayName("Benefits block should be loaded")
-    void benefitsBlockLoadedTest() {
-        step("Проверка загрузки блока страхования", () -> {
-            $("#benefit h3").shouldHave(text("Все деньги застрахованы"));
-        });
+    @DisplayName("Can open archive cards area")
+    void canOpenArchiveCardsByLinkClickTest() {
+        step("Click by link", () -> $(byText("Архивные карты")).click());
+        step("Check text on archived card", () -> $(byText("Карта больше не выпускается")).shouldBe(visible));
     }
 
-    @Test
-    @DisplayName("SEO block should be loaded")
-    void seoBlockLoadedTest() {
-        step("Проверка загрузки блока SEO", () -> {
-            $("#seo-text").shouldBe(visible);
-        });
-    }
 
     @Test
-    @DisplayName("Check Premium filter")
+    @DisplayName("Check cards filter by premium parameter")
     void premiumFilterTest() {
-        step("Нажать на пункт Premium ", () -> {
-            $("[data-test-id=tabs-list-tabTitle-1]").click();
-        });
-        step("Проверить количество и заголовки отфильтрованных карт", () -> {
-            $$("#premium-cards h2").shouldHaveSize(3);
-            $("#alfacard-premium h2").shouldHave(text("Альфа-Карта Premium"));
-            $("#alfa-travel-premium h2").shouldHave(text("Alfa Travel Premium"));
-            $("#aeroflot-premium h2").shouldHave(text("Аэрофлот Black Edition"));
+        step("Click Premium Button", () -> $("[data-test-id=tabs-list-tabTitle-1]").click());
+        step("Check premium cards count", () -> $$("#premium-cards h2").shouldHave(size(3)));
+        step("Check premium cards titles", () -> {
+            $("#alfacard-premium h2").shouldHave(text("Дебетовая Альфа-Карта Premium"));
+            $("#alfa-travel-premium h2").shouldHave(text("Дебетовая карта Alfa Travel Premium"));
+            $("#aeroflot-premium h2").shouldHave(text("Дебетовая карта Аэрофлот Black Edition"));
         });
     }
 
     @Test
-    @DisplayName("Check trip filter")
+    @DisplayName("Check cards filter by trip parameter")
     void tripFilterTest() {
-        step("Нажать на пункт Для путешествий", () -> {
-            $("[data-test-id=tabs-list-tabTitle-2]").click();
-        });
-        step("Проверить количество и заголовки отфильтрованных карт", () -> {
-            $$("#travel-cards h2").shouldHaveSize(4);
-            $("#alfa-travel h2").shouldHave(text("Alfa Travel"));
-            $("#alfa-travel-premium h2").shouldHave(text("Alfa Travel Premium"));
-            $("#aeroflot h2").shouldHave(text("Аэрофлот"));
-            $("#aeroflot-premium h2").shouldHave(text("Аэрофлот Black Edition"));
+        step("Click trip button", () -> $("[data-test-id=tabs-list-tabTitle-2]").click());
+        step("Check trip cards count", () -> $$("#travel-cards h2").shouldHave(size(4)));
+        step("Check trip cards titles", () -> {
+            $("#alfa-travel h2").shouldHave(text("Дебетовая карта Alfa Travel"));
+            $("#alfa-travel-premium h2").shouldHave(text("Дебетовая карта Alfa Travel Premium"));
+            $("#aeroflot h2").shouldHave(text("Дебетовая карта Аэрофлот"));
+            $("#aeroflot-premium h2").shouldHave(text("Дебетовая карта Аэрофлот Black Edition"));
         });
     }
 
     @Test
-    @DisplayName("Check shopping filter")
+    @DisplayName("Check cards filter by shopping parameter")
     void shoppingFilterTest() {
-        step("Нажать на пункт Для покупок", () -> {
-            $("[data-test-id=tabs-list-tabTitle-3]").click();
-        });
-        step("Проверить количество и заголовки отфильтрованных карт", () -> {
-            $$("#shopping-cards h2").shouldHaveSize(4);
-            $("#alfacard-benefit h2").shouldHave(text("Альфа-Карта"));
-            $("#yandex h2").shouldHave(text("Яндекс.Плюс"));
-            $("#pyaterochka h2").shouldHave(text("Пятёрочка"));
-            $("#perekrestok h2").shouldHave(text("Перекрёсток"));
+        step("Click shopping button", () -> $("[data-test-id=tabs-list-tabTitle-3]").click());
+        step("Check shopping cards count", () -> $$("#shopping-cards h2").shouldHave(size(2)));
+        step("Check shopping cards titles", () -> {
+            $("#alfacard-benefit h2").shouldHave(text("Дебетовая Альфа-Карта"));
+            $("#pyaterochka h2").shouldHave(text("Дебетовая карта Пятёрочка"));
         });
     }
 }

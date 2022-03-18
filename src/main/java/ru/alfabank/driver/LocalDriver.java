@@ -11,7 +11,7 @@ public class LocalDriver implements DriverProvider {
     public void init() {
         addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
         Configuration.timeout = 5000;
-        Configuration.startMaximized = true;
+        Configuration.browserSize = "2048x1024";
         Configuration.browser = WebConfig.WEB_CONFIG.getBrowserName();
         Configuration.baseUrl = WebConfig.WEB_CONFIG.getBaseUrl();
     }
